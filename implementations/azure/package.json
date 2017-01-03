@@ -1,5 +1,14 @@
 {
-	"dependencies": {
-		"got": "*"
-	}
+  "dependencies": {
+    "got": "*"
+  },
+  "scripts": {
+    "build": "./node_modules/.bin/babel index.js -d lib",
+    "test": "./node_modules/.bin/babel-node test.js"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.21.0",
+    "babel-preset-env": "^1.1.4"
+  }
 }

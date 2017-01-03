@@ -1,8 +1,7 @@
-
 const got = require('got');
-const azureService = 'https://attestations.azure.com';
+const azureService = 'https://wal.sh/static/decentralized-identity';
 
-module.exports = class Attestations {
+export default class Attestations {
   constructor (options = {}) {
     this.key = options.key;
   }
@@ -16,13 +15,13 @@ module.exports = class Attestations {
         throw 'You provided no attestation data';
       }
       options.key = this.key;
-      got.post(azureService + '/create', {
+      got.post(`${azureService}/create.json`, {
         json: true,
         body: options
       }).then(response => {
-        resolve(response.record);
+        resolve(response.body.record);
       }).catch(response => {
-        reject(response)
+        reject(response);
       })
     });
   }
@@ -30,17 +29,17 @@ module.exports = class Attestations {
   retrieve (id) {
     return new Promise((resolve, reject) => {
       if (this.record) resolve(this.record);
-      else got.get(azureService + '/attestation/' + id, {
+      else got.get(`${azureService}/attestation/${id}.json`, {
         json: true,
         body: { key: this.key }
       }).then(response => {
-        resolve(response.record);
+        resolve(response.body); // .record
       })
     });
   }
 
   status (id) {
-    return got.get(azureService + '/status/' + id, {
+    return got.get(`${azureService}/status/${id}.json`, {
       json: true,
       body: { key: this.key }
     })
@@ -51,7 +50,7 @@ module.exports = class Attestations {
   }
 
   verify (id) {
-    
+
   }
 
-} 
+}
